@@ -18,6 +18,9 @@ package sample.data.cassandra;
 
 import com.datastax.driver.core.utils.UUIDs;
 
+import sample.data.cassandra.entity.CustomerEntity;
+import sample.data.cassandra.repo.CustomerRepository;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -33,14 +36,22 @@ public class SampleCassandraApplication implements CommandLineRunner {
 	public void run(String... args) throws Exception {
 		this.repository.deleteAll();
 
+		for (int i = 0; i < 1000; i++) {
+			// save a couple of customers
+			this.repository.save(new CustomerEntity(UUIDs.timeBased(), "Alice", "Smith"));
+			this.repository.save(new CustomerEntity(UUIDs.timeBased(), "Bob", "Smith"));
+		}
+     
+		/*
+		
 		// save a couple of customers
-		this.repository.save(new Customer(UUIDs.timeBased(), "Alice", "Smith"));
-		this.repository.save(new Customer(UUIDs.timeBased(), "Bob", "Smith"));
+		this.repository.save(new CustomerEntity(UUIDs.timeBased(), "Alice", "Smith"));
+		this.repository.save(new CustomerEntity(UUIDs.timeBased(), "Bob", "Smith"));
 
 		// fetch all customers
 		System.out.println("Customers found with findAll():");
 		System.out.println("-------------------------------");
-		for (Customer customer : this.repository.findAll()) {
+		for (CustomerEntity customer : this.repository.findAll()) {
 			System.out.println(customer);
 		}
 		System.out.println();
@@ -52,12 +63,15 @@ public class SampleCassandraApplication implements CommandLineRunner {
 
 		System.out.println("Customers found with findByLastName('Smith'):");
 		System.out.println("--------------------------------");
-		for (Customer customer : this.repository.findByLastName("Smith")) {
+		for (CustomerEntity customer : this.repository.findByLastName("Smith")) {
 			System.out.println(customer);
 		}
+		
+		*/
 	}
 
 	public static void main(String[] args) {
+//		System.setProperty("spring.devtools.restart.enabled", "false");
 		SpringApplication.run(SampleCassandraApplication.class, args);
 	}
 

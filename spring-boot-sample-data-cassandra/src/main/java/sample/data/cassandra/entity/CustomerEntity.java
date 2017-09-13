@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package sample.data.cassandra;
+package sample.data.cassandra.entity;
 
 import java.util.UUID;
 
@@ -23,8 +23,8 @@ import org.springframework.data.cassandra.mapping.Table;
 
 
 
-@Table
-public class Customer {
+@Table(value="Customer")
+public class CustomerEntity {
 
 	@PrimaryKey
 	private UUID id;
@@ -32,13 +32,38 @@ public class Customer {
 	private String firstName;
 
 	private String lastName;
-
-	public Customer() {
+	
+	public CustomerEntity() {
 	}
 
-	public Customer(UUID id, String firstName, String lastName) {
+	public CustomerEntity(UUID id, String firstName, String lastName) {
 		this.id = id;
 		this.firstName = firstName;
+		this.lastName = lastName;
+	}
+
+	
+	public UUID getId() {
+		return id;
+	}
+
+	public void setId(UUID id) {
+		this.id = id;
+	}
+
+	public String getFirstName() {
+		return firstName;
+	}
+
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
+	}
+
+	public String getLastName() {
+		return lastName;
+	}
+
+	public void setLastName(String lastName) {
 		this.lastName = lastName;
 	}
 

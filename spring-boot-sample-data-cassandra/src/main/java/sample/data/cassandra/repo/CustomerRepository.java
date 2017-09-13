@@ -14,19 +14,22 @@
  * limitations under the License.
  */
 
-package sample.data.cassandra;
+package sample.data.cassandra.repo;
 
 import java.util.List;
 
 import org.springframework.data.cassandra.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 
-public interface CustomerRepository extends CrudRepository<Customer, String> {
 
+import sample.data.cassandra.entity.CustomerEntity;
+
+public interface CustomerRepository extends CrudRepository<CustomerEntity, String> {
+	
 	@Query("Select * from customer where firstname=?0")
-	public Customer findByFirstName(String firstName);
+	public CustomerEntity findByFirstName(String firstName);
 
 	@Query("Select * from customer where lastname=?0")
-	public List<Customer> findByLastName(String lastName);
+	public List<CustomerEntity> findByLastName(String lastName);
 
 }
