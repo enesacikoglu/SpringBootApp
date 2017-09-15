@@ -27,7 +27,7 @@ import org.springframework.data.cassandra.mapping.Table;
 public class CustomerEntity {
 
 	@PrimaryKey
-	private UUID id;
+	private String id;
 
 	private String firstName;
 
@@ -36,18 +36,18 @@ public class CustomerEntity {
 	public CustomerEntity() {
 	}
 
-	public CustomerEntity(UUID id, String firstName, String lastName) {
+	public CustomerEntity(String id, String firstName, String lastName) {
 		this.id = id;
 		this.firstName = firstName;
 		this.lastName = lastName;
 	}
 
 	
-	public UUID getId() {
+	public String getId() {
 		return id;
 	}
 
-	public void setId(UUID id) {
+	public void setId(String id) {
 		this.id = id;
 	}
 

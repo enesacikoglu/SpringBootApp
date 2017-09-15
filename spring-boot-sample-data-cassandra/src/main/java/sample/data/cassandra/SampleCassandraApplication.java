@@ -38,8 +38,8 @@ public class SampleCassandraApplication implements CommandLineRunner {
 
 		for (int i = 0; i < 1000; i++) {
 			// save a couple of customers
-			this.repository.save(new CustomerEntity(UUIDs.timeBased(), "Alice", "Smith"));
-			this.repository.save(new CustomerEntity(UUIDs.timeBased(), "Bob", "Smith"));
+			this.repository.save(new CustomerEntity(UUIDs.timeBased().toString(), "Alice", "Smith"));
+			this.repository.save(new CustomerEntity(UUIDs.timeBased().toString(), "Bob", "Smith"));
 		}
      
 		/*

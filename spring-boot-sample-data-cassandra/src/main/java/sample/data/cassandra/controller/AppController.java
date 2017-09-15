@@ -8,8 +8,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import sample.data.cassandra.model.Application;
 
-
-
 @Controller
 public class AppController {
 
@@ -20,9 +18,8 @@ public class AppController {
 	public String home() {
 		return "home";
 	}
-	
-	
-	@RequestMapping(path = {"/search" }, method = RequestMethod.GET)
+
+	@RequestMapping(path = { "/search" }, method = RequestMethod.GET)
 	public String search() {
 		return "search";
 	}
@@ -32,4 +29,5 @@ public class AppController {
 	public Application appInfo() {
 		return app;
 	}
+
 }

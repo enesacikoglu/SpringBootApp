@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8" />
+<title>Insert title here</title>
+<script type="text/javascript" language="javascript"
+	src="https://code.jquery.com/jquery-1.12.4.js" />
+<script type="text/javascript" language="javascript"
+	src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js" />
+<script type="text/javascript" language="javascript"
+	src="https://cdn.datatables.net/buttons/1.4.2/js/dataTables.buttons.min.js" />
+<script type="text/javascript" language="javascript"
+	src="https://cdn.datatables.net/select/1.2.3/js/dataTables.select.min.js" />
+<script type="text/javascript" language="javascript"
+	src="https://cdn.datatables.net/scroller/1.4.3/js/dataTables.scroller.min.js" />
+<script type="text/javascript" language="javascript"
+	src="/editor/js/dataTables.editor.min.js" />
+<link rel="stylesheet" type="text/css"
+	href="https://cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css" />
+<link rel="stylesheet" type="text/css"
+	href="https://cdn.datatables.net/buttons/1.4.2/css/buttons.dataTables.min.css" />
+<link rel="stylesheet" type="text/css"
+	href="https://cdn.datatables.net/select/1.2.3/css/select.dataTables.min.css" />
+<link rel="stylesheet" type="text/css"
+	href="https://editor.datatables.net/extensions/Editor/css/editor.dataTables.min.css" />
+<link rel="stylesheet" type="text/css"
+	href="https://cdn.datatables.net/scroller/1.4.3/css/scroller.dataTables.min.css" />
+<script type="text/javascript">
+	var editor; // use a global for the submit and return data rendering in the examples
+
+	$(document).ready(function() {
+		editor = new $.fn.dataTable.Editor({
+			ajax : {
+				create : {
+					type : 'POST',
+					url : '../php/rest/create.php'
+				},
+				edit : {
+					type : 'PUT',
+					url : '../php/rest/edit.php?id=_id_'
+				},
+				remove : {
+					type : 'POST',
+					url : '../customer/delete?id=_id_'
+				}
+			},
+			table : "#customerTable",
+			fields : [ {
+				label : "ID:",
+				name : "id"
+			}, {
+				label : "FIRST NAME:",
+				name : "firstName"
+			}, {
+				label : "LAST NAME:",
+				name : "lastName"
+			} ]
+		});
+
+		$('#customerTable').DataTable({
+			dom : "Bfrtip",
+			ajax : "../api/customer/getAllCustomers",
+			scrollY : 200,
+			scroller : {
+				loadingIndicator : true
+			},
+			columns : [ {
+				data : "id"
+			}, {
+				data : "firstName"
+			}, {
+				data : "lastName"
+			} ],
+			select : true,
+			buttons : [ {
+				extend : "create",
+				editor : editor
+			}, {
+				extend : "edit",
+				editor : editor
+			}, {
+				extend : "remove",
+				editor : editor
+			} ]
+		});
+	});
+</script>
+
+</head>
+<body>
+
+	<table id="customerTable" class="display" cellspacing="0" width="100%">
+		<thead>
+			<tr>
+				<th>id</th>
+				<th>firstName</th>
+				<th>lastName</th>
+			</tr>
+		</thead>
+		<tfoot>
+			<tr>
+				<th>id</th>
+				<th>firstName</th>
+				<th>lastName</th>
+			</tr>
+		</tfoot>
+	</table>
+
+</body>
+</html>
