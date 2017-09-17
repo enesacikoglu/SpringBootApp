@@ -19,6 +19,51 @@ public class ApplicationProperties {
 	
 	@Value("${max_pool_connection}")
 	private int maxPoolConnection;
+	
+	@Value("${SITE_IV_URL}")
+	private String siteIVUrl;
+	
+	@Value("${SITE_III_URL}")
+	private String siteIIIUrl;
+	
+	@Value("${SITE_II_URL}")
+	private String siteIIUrl;
+	
+	@Value("${SITE_I_URL}")
+	private String siteIUrl;
+	
+	
+	public String getSiteIVUrl() {
+		return siteIVUrl;
+	}
+
+	public void setSiteIVUrl(String siteIVUrl) {
+		this.siteIVUrl = siteIVUrl;
+	}
+
+	public String getSiteIIIUrl() {
+		return siteIIIUrl;
+	}
+
+	public void setSiteIIIUrl(String siteIIIUrl) {
+		this.siteIIIUrl = siteIIIUrl;
+	}
+
+	public String getSiteIIUrl() {
+		return siteIIUrl;
+	}
+
+	public void setSiteIIUrl(String siteIIUrl) {
+		this.siteIIUrl = siteIIUrl;
+	}
+
+	public String getSiteIUrl() {
+		return siteIUrl;
+	}
+
+	public void setSiteIUrl(String siteIUrl) {
+		this.siteIUrl = siteIUrl;
+	}
 
 	public String getKeyspaceName() {
 		return keyspaceName;

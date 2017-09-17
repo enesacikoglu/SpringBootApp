@@ -9,6 +9,6 @@ public interface CustomerService {
 
 	List<CustomerModel> findAll();
 	
-	void deleteCustomer(String id);
+	boolean deleteCustomer(String id);
 		
 }

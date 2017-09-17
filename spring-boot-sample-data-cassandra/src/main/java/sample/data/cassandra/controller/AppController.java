@@ -23,6 +23,7 @@ public class AppController {
 	public String search() {
 		return "search";
 	}
+	
 
 	@RequestMapping(path = { "/app" }, method = RequestMethod.GET)
 	@ResponseBody

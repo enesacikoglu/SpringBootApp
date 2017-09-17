@@ -18,7 +18,7 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import sample.data.cassandra.entity.Product;
 import sample.data.cassandra.model.CustomerModel;
-import sample.data.cassandra.model.DataTableModel;
+import sample.data.cassandra.model.CustomerDataTableModel;
 import sample.data.cassandra.service.CustomerService;
 
 
@@ -49,12 +49,12 @@ public class CustomerController {
 			@ApiResponse(code = 500, message = "Error occurred while fetching Customers") })
 	@ResponseBody
 	@RequestMapping(value = "/getAllCustomers", method = RequestMethod.GET, produces = "application/json")
-	public ResponseEntity<DataTableModel> getAllCustomers() { 
+	public ResponseEntity<CustomerDataTableModel> getAllCustomers() { 
 		
-		DataTableModel tableModel= new DataTableModel();
+		CustomerDataTableModel tableModel= new CustomerDataTableModel();
 		tableModel.setData(customerService.findAll());
 		
-		return new ResponseEntity<DataTableModel>(tableModel, HttpStatus.OK);
+		return new ResponseEntity<CustomerDataTableModel>(tableModel, HttpStatus.OK);
 		
 	
 	}

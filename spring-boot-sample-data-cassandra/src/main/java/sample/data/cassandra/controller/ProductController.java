@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import sample.data.cassandra.entity.Product;
+import sample.data.cassandra.entity.ProductEntity;
+import sample.data.cassandra.service.ProductEntityService;
 import sample.data.cassandra.service.ProductService;
 
 @Controller
@@ -22,6 +24,7 @@ public class ProductController {
 
 	@Autowired
 	private ProductService productService;
+	
 
 	@RequestMapping(value = "/products", method = RequestMethod.GET)
 	public String list(Model model, Pageable pageable) {
@@ -31,6 +34,7 @@ public class ProductController {
 		model.addAttribute("page", page);
 		return "products";
 	}
+		
 
 	@RequestMapping("product/{id}")
 	public String showProduct(@PathVariable Integer id, Model model) {

@@ -19,7 +19,13 @@ package sample.data.cassandra;
 import com.datastax.driver.core.utils.UUIDs;
 
 import sample.data.cassandra.entity.CustomerEntity;
+import sample.data.cassandra.entity.ProductCassandraEntity;
 import sample.data.cassandra.repo.CustomerRepository;
+import sample.data.cassandra.repo.ProductCassandraRepository;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -31,6 +37,9 @@ public class SampleCassandraApplication implements CommandLineRunner {
 
 	@Autowired
 	private CustomerRepository repository;
+	
+	@Autowired
+	private ProductCassandraRepository productCassandraRepository;
 
 	@Override
 	public void run(String... args) throws Exception {
@@ -41,7 +50,42 @@ public class SampleCassandraApplication implements CommandLineRunner {
 			this.repository.save(new CustomerEntity(UUIDs.timeBased().toString(), "Alice", "Smith"));
 			this.repository.save(new CustomerEntity(UUIDs.timeBased().toString(), "Bob", "Smith"));
 		}
-     
+		
+		/*
+		Map<String, String> priceOnDateMap= new HashMap<>();
+		
+		priceOnDateMap.put("20170101", "126");
+		priceOnDateMap.put("20170102", "127");
+		priceOnDateMap.put("20170103", "128");
+		priceOnDateMap.put("20170104", "112");
+		priceOnDateMap.put("20170105", "3141");
+		priceOnDateMap.put("20170106", "414");
+		priceOnDateMap.put("20170107", "15151");
+		priceOnDateMap.put("20170108", "151515");
+		priceOnDateMap.put("20170109", "11111");
+		priceOnDateMap.put("20170110", "62111");
+		
+		this.productCassandraRepository.save(new ProductCassandraEntity(UUIDs.timeBased().toString(),"1",priceOnDateMap));
+     	
+		
+		
+		
+		for (ProductCassandraEntity product : this.productCassandraRepository.findAll()) {
+			
+			Set<String> keySet = product.getPriceOnDateMap().keySet();
+			
+			for (String string : keySet) {
+				if (keySet.contains(string)) {
+					System.out.println(product.getPriceOnDateMap().get(string));		
+				}
+			}
+			
+//			System.out.println(product);
+		}
+	
+		*/
+//*********************************************************************************************************//		
+		
 		/*
 		
 		// save a couple of customers
