@@ -18,74 +18,59 @@ package sample.data.cassandra.entity;
 
 import java.util.Map;
 
-import javax.persistence.Column;
-import javax.persistence.ElementCollection;
-
-
+import org.springframework.data.cassandra.mapping.Indexed;
 import org.springframework.data.cassandra.mapping.PrimaryKey;
 import org.springframework.data.cassandra.mapping.Table;
 
-
-
-@Table(value="Product")
+@Table(value = "Product")
 public class ProductCassandraEntity {
 
-	@PrimaryKey
-	private String id;
-	
-	private String productId;
+   @PrimaryKey
+   private String id;
 
+   private String productId;
 
-	private Map<String,String> priceOnDateMap;
-	
-	
-	public ProductCassandraEntity() {
+   @Indexed
+   private String url;
 
-	}
+   private Map<String, String> priceOnDateMap;
 
+   public String getId() {
+      return id;
+   }
 
-	public ProductCassandraEntity(String id, String productId, Map<String, String> priceOnDateMap) {
-		super();
-		this.id = id;
-		this.productId = productId;
-		this.priceOnDateMap = priceOnDateMap;
-	}
+   public void setId(String id) {
+      this.id = id;
+   }
 
+   public String getProductId() {
+      return productId;
+   }
 
-	public String getId() {
-		return id;
-	}
+   public void setProductId(String productId) {
+      this.productId = productId;
+   }
 
-	public void setId(String id) {
-		this.id = id;
-	}
-	
+   public String getUrl() {
+      return url;
+   }
 
-	public String getProductId() {
-		return productId;
-	}
+   public void setUrl(String url) {
+      this.url = url;
+   }
 
-	public void setProductId(String productId) {
-		this.productId = productId;
-	}
+   public Map<String, String> getPriceOnDateMap() {
+      return priceOnDateMap;
+   }
 
+   public void setPriceOnDateMap(Map<String, String> priceOnDateMap) {
+      this.priceOnDateMap = priceOnDateMap;
+   }
 
-	public Map<String, String> getPriceOnDateMap() {
-		return priceOnDateMap;
-	}
-
-	public void setPriceOnDateMap(Map<String, String> priceOnDateMap) {
-		this.priceOnDateMap = priceOnDateMap;
-	}
-
-
-	@Override
-	public String toString() {
-		return "ProductCassandraEntity [id=" + id + ", productId=" + productId + ", priceOnDateMap=" + priceOnDateMap
-				+ "]";
-	}
-
-
-
+   @Override
+   public String toString() {
+      return "ProductCassandraEntity [id=" + id + ", productId=" + productId + ", priceOnDateMap=" + priceOnDateMap
+            + "]";
+   }
 
 }

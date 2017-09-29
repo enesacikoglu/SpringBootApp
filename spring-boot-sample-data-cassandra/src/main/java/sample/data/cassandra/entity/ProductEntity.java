@@ -1,7 +1,7 @@
 package sample.data.cassandra.entity;
 
 import javax.persistence.*;
-import java.util.Map;
+
 
 @Entity
 public class ProductEntity {

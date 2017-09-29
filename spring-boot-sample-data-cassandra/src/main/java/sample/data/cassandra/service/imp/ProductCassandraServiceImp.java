@@ -1,82 +1,69 @@
 package sample.data.cassandra.service.imp;
 
-
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map.Entry;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-
 import sample.data.cassandra.entity.ProductCassandraEntity;
-import sample.data.cassandra.model.ProductBarChart;
+import sample.data.cassandra.model.ProductChartModel;
 import sample.data.cassandra.repo.ProductCassandraRepository;
 import sample.data.cassandra.service.ProductCassandraService;
 
 @Service
 public class ProductCassandraServiceImp implements ProductCassandraService {
 
-	@Autowired
-	private ProductCassandraRepository productCassandraRepo;
+   @Autowired
+   private ProductCassandraRepository productCassandraRepo;
 
-	@Override
-	public List<ProductCassandraEntity> findAll() {
-		return (List<ProductCassandraEntity>) productCassandraRepo.findAll();
-	}
+   public List<ProductChartModel> getProductBarChartById(String id) {
 
-	@Override
-	public void deleteCustomer(String id) {
-		
-		ProductCassandraEntity findOne = productCassandraRepo.findOne(id);
-		System.out.println("Fail:"+findOne);
-		if (findOne != null) {
-			System.out.println("Succ:"+findOne);
-			productCassandraRepo.delete(findOne);
-		}
-	}
+      List<ProductChartModel> timeChart = new ArrayList<>();
 
-	@Override
-	public List<ProductBarChart> getAllProductBarCharts() {
-		
-	
-		
-		return null;
-	}
+      Set<Entry<String, String>> entrySet = productCassandraRepo.findOne(id).getPriceOnDateMap().entrySet();
 
-	@Override
-	public List<ProductBarChart> getProductBarChartById(String id) {
-		
-		List<ProductBarChart> barCharts= new ArrayList<>();
-		
-	Iterable<ProductCassandraEntity> findAll = productCassandraRepo.findAll();
-		
-		for (ProductCassandraEntity productCassandraEntity : findAll) {
-			
-			if(productCassandraEntity.getProductId().equals(id)){
-				
-				Set<Entry<String, String>> entrySet = productCassandraEntity.getPriceOnDateMap().entrySet();
-				
-				for (Entry<String, String> entry : entrySet) {
-	             
-					ProductBarChart barChart= new ProductBarChart();
-					
-					barChart.setDate(entry.getKey());
-					barChart.setPrice(entry.getValue());
-					
-					barCharts.add(barChart);
+      for (Entry<String, String> entry : entrySet) {
 
-				}
-				
-			}
-			
-			
-		}
-		
-		// TODO Auto-generated method stub
-		return barCharts;
-	}
+         ProductChartModel barChart = new ProductChartModel();
+
+         barChart.setDate(entry.getKey());
+         barChart.setPrice(entry.getValue());
+
+         timeChart.add(barChart);
+
+      }
+
+      // TODO Auto-generated method stub
+      return timeChart;
+   }
+
+   @Override
+   public List<ProductChartModel> findByProductId(String productId) {
+      // TODO Auto-generated method stub
+
+      return productCassandraRepo.findByProductId(productId).parallelStream()
+            .filter(t -> t.getProductId().equals(productId)).findFirst().get().getPriceOnDateMap().entrySet()
+            .parallelStream().map(t -> {
+
+               ProductChartModel chartModel = new ProductChartModel();
+
+               chartModel.setDate(t.getKey());
+               chartModel.setPrice(t.getValue());
+
+               return chartModel;
+
+            }).collect(Collectors.toList());
+
+   }
+
+   @Override
+   public ProductCassandraEntity findOne(String id) {
+      // TODO Auto-generated method stub
+      return productCassandraRepo.findOne(id);
+   }
 
 }

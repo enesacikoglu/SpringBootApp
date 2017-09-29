@@ -16,13 +16,14 @@
 
 package sample.data.cassandra.repo;
 
+import java.util.List;
 
 import org.springframework.data.repository.CrudRepository;
-
 
 import sample.data.cassandra.entity.ProductCassandraEntity;
 
 public interface ProductCassandraRepository extends CrudRepository<ProductCassandraEntity, String> {
-	
+
+   public List<ProductCassandraEntity> findByProductId(String productId);
 
 }

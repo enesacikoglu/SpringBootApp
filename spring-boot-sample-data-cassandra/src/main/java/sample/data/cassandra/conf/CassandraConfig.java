@@ -1,55 +1,82 @@
 package sample.data.cassandra.conf;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cassandra.config.CassandraCqlClusterFactoryBean;
+import org.springframework.cassandra.config.DataCenterReplication;
+import org.springframework.cassandra.core.keyspace.CreateKeyspaceSpecification;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.cassandra.config.SchemaAction;
 import org.springframework.data.cassandra.config.java.AbstractCassandraConfiguration;
-import org.springframework.data.cassandra.convert.MappingCassandraConverter;
-import org.springframework.data.cassandra.core.CassandraOperations;
-import org.springframework.data.cassandra.core.CassandraTemplate;
-import org.springframework.data.cassandra.mapping.BasicCassandraMappingContext;
 import org.springframework.data.cassandra.repository.config.EnableCassandraRepositories;
 
 /**
  *
- * @author bl4ckbird
+ * @author Enes
  */
 @Configuration
 @EnableCassandraRepositories("sample.data.cassandra.repo")
-public class CassandraConfig extends AbstractCassandraConfiguration{
+public class CassandraConfig extends AbstractCassandraConfiguration {
 
+   @Autowired
+   ApplicationProperties properties;
 
-	@Autowired
-	ApplicationProperties properties;
-	
+   @Bean
+   @Override
+   public CassandraCqlClusterFactoryBean cluster() {
+      CassandraCqlClusterFactoryBean bean = new CassandraCqlClusterFactoryBean();
+      bean.setKeyspaceCreations(getKeyspaceCreations());
+      bean.setContactPoints(properties.getContactPoints());
+      bean.setPort(properties.getPort());
+      return bean;
+   }
 
+   @Override
+   protected List<String> getStartupScripts() {
 
-    @Override
-    protected String getKeyspaceName() {
+      String script = "CREATE KEYSPACE IF NOT EXISTS cimriKeyspace " + "WITH durable_writes = true "
+            + "AND replication = { 'replication_factor' : 1, 'class' : 'SimpleStrategy' };";
 
-        return properties.getKeyspaceName();
-    }
+      String tableProduct = "CREATE TABLE IF NOT EXISTS Product (id text PRIMARY KEY, productId text, url text,priceOnDateMap map<text,text>);";
 
-    @Override
-    protected String getContactPoints() {
-        return properties.getContactPoints();
-    }
+      String tableIndex = "CREATE INDEX IF NOT EXISTS productIdindex ON Product (productId);";
 
-    @Override
-    protected int getPort() {
-        return properties.getPort();
-    }
+      return Arrays.asList(script, tableProduct, tableIndex);
+   }
 
-         @Override
-        public SchemaAction getSchemaAction() {
-            return SchemaAction.NONE;
-        }
+   @Override
+   public SchemaAction getSchemaAction() {
+      return SchemaAction.CREATE_IF_NOT_EXISTS;
+   }
 
-    @Bean
-    public CassandraOperations operations() throws Exception {
+   @Override
+   protected String getKeyspaceName() {
+      return properties.getKeyspaceName();
+   }
 
-        return new CassandraTemplate(session().getObject(), new MappingCassandraConverter(new BasicCassandraMappingContext()));
-    } 
+   @Override
+   public String[] getEntityBasePackages() {
+      return new String[] { "sample.data.cassandra.entity" };
+   }
+
+   protected List<CreateKeyspaceSpecification> getKeyspaceCreations() {
+      List<CreateKeyspaceSpecification> createKeyspaceSpecifications = new ArrayList<>();
+      createKeyspaceSpecifications.add(getKeySpaceSpecification());
+      return createKeyspaceSpecifications;
+   }
+
+   // Below method creates "my_keyspace" if it doesnt exist.
+   private CreateKeyspaceSpecification getKeySpaceSpecification() {
+      CreateKeyspaceSpecification pandaCoopKeyspace = new CreateKeyspaceSpecification();
+      DataCenterReplication dcr = new DataCenterReplication("dc1", 3L);
+      pandaCoopKeyspace.name(properties.getKeyspaceName());
+      pandaCoopKeyspace.ifNotExists(true);
+      CreateKeyspaceSpecification.createKeyspace().withNetworkReplication(dcr);
+      return pandaCoopKeyspace;
+   }
 
 }
